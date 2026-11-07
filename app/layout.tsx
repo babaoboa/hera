@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { InteractionSounds } from "@/components/site/InteractionSounds";
-import { ThemeSync } from "@/components/site/ThemeSync";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,18 +19,13 @@ export const metadata: Metadata = {
     "A small library of extremely crafted, copy-paste components for chat agents, thinking states, human-in-the-loop approvals, and everything agents need to talk to humans beautifully.",
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem("bui-theme");document.documentElement.classList.toggle("dark",t!=="light")}catch(e){document.documentElement.classList.add("dark")}})()`;
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en" style={{ colorScheme: "light" }}>
       <body className={`${inter.variable} ${mono.variable} font-sans`}>
-        <ThemeSync />
         <InteractionSounds />
         {children}
       </body>
