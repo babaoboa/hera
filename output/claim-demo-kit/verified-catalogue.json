@@ -1,0 +1,240 @@
+{
+  "checkedAt": "2026-11-07T22:43:20.531Z",
+  "mode": "Live model rehearsal in an isolated temporary household",
+  "prices": "Model-generated replacement estimates in CAD, not verified retailer quotes. Receipts are fictional purchases.",
+  "inventory": [
+    {
+      "id": "t5s1sx9r",
+      "name": "Green sofa",
+      "room": "Living room",
+      "replacementEstimateCad": 1800,
+      "confirmed": true,
+      "receipt": {
+        "merchant": "NORTHLINE HOME",
+        "purchasedAt": "2024-06-15",
+        "purchasePriceCad": 1699
+      }
+    },
+    {
+      "id": "3rs2b78u",
+      "name": "Armchair with white pillow",
+      "room": "Living room",
+      "replacementEstimateCad": 900,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "slj9lmko",
+      "name": "Coffee table",
+      "room": "Living room",
+      "replacementEstimateCad": 700,
+      "confirmed": true,
+      "receipt": {
+        "merchant": "NORTHLINE HOME",
+        "purchasedAt": "2024-08-03",
+        "purchasePriceCad": 249
+      }
+    },
+    {
+      "id": "st95hbbj",
+      "name": "Side table",
+      "room": "Living room",
+      "replacementEstimateCad": 300,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "wtelxbi8",
+      "name": "Area rug",
+      "room": "Living room",
+      "replacementEstimateCad": 1200,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "k39ysr1i",
+      "name": "Arc floor lamp",
+      "room": "Living room",
+      "replacementEstimateCad": 350,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "n9fdw331",
+      "name": "Framed wall art, set of 9",
+      "room": "Living room",
+      "replacementEstimateCad": 1800,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "6v562o9h",
+      "name": "Macrame wall hanging",
+      "room": "Living room",
+      "replacementEstimateCad": 250,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "pfsiomyg",
+      "name": "Potted tall plant",
+      "room": "Living room",
+      "replacementEstimateCad": 200,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "vtia7481",
+      "name": "Throw pillow, decorative set",
+      "room": "Living room",
+      "replacementEstimateCad": 200,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "fogej64y",
+      "name": "Throw blanket",
+      "room": "Living room",
+      "replacementEstimateCad": 120,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "iq5t8wfj",
+      "name": "Decorative bowl",
+      "room": "Living room",
+      "replacementEstimateCad": 80,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "aoo9b71x",
+      "name": "Computer desk",
+      "room": "Home office",
+      "replacementEstimateCad": 350,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "vm6nto2j",
+      "name": "Office chair",
+      "room": "Home office",
+      "replacementEstimateCad": 250,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "un1lpkcs",
+      "name": "Desktop computer tower",
+      "room": "Home office",
+      "replacementEstimateCad": 1800,
+      "confirmed": true,
+      "receipt": {
+        "merchant": "RIVERBEND TECH",
+        "purchasedAt": "2024-11-22",
+        "purchasePriceCad": 1899
+      }
+    },
+    {
+      "id": "riikizsz",
+      "name": "Computer monitor",
+      "room": "Home office",
+      "replacementEstimateCad": 500,
+      "confirmed": true,
+      "receipt": {
+        "merchant": "RIVERBEND TECH",
+        "purchasedAt": "2025-01-18",
+        "purchasePriceCad": 349.99
+      }
+    },
+    {
+      "id": "0yrdl5sm",
+      "name": "Monitor arm",
+      "room": "Home office",
+      "replacementEstimateCad": 80,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "4b1fgctf",
+      "name": "Keyboard",
+      "room": "Home office",
+      "replacementEstimateCad": 120,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "g8f04wqu",
+      "name": "Computer mouse",
+      "room": "Home office",
+      "replacementEstimateCad": 40,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "6gckohy1",
+      "name": "Speaker",
+      "room": "Home office",
+      "replacementEstimateCad": 150,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "2pzwa162",
+      "name": "Desk lamp",
+      "room": "Home office",
+      "replacementEstimateCad": 60,
+      "confirmed": true,
+      "receipt": null
+    },
+    {
+      "id": "cv9ra8bu",
+      "name": "Potted plant",
+      "room": "Home office",
+      "replacementEstimateCad": 30,
+      "confirmed": true,
+      "receipt": null
+    }
+  ],
+  "receipts": [
+    {
+      "file": "01-sofa-receipt.jpg",
+      "matchedItem": "Green sofa",
+      "purchasePrice": 1699,
+      "merchant": "NORTHLINE HOME",
+      "purchasedAt": "2024-06-15",
+      "passed": true
+    },
+    {
+      "file": "02-coffee-table-receipt.jpg",
+      "matchedItem": "Coffee table",
+      "purchasePrice": 249,
+      "merchant": "NORTHLINE HOME",
+      "purchasedAt": "2024-08-03",
+      "passed": true
+    },
+    {
+      "file": "03-monitor-receipt.jpg",
+      "matchedItem": "Computer monitor",
+      "purchasePrice": 349.99,
+      "merchant": "RIVERBEND TECH",
+      "purchasedAt": "2025-01-18",
+      "passed": true
+    },
+    {
+      "file": "04-desktop-pc-receipt.jpg",
+      "matchedItem": "Desktop computer tower",
+      "purchasePrice": 1899,
+      "merchant": "RIVERBEND TECH",
+      "purchasedAt": "2024-11-22",
+      "passed": true
+    }
+  ],
+  "review": {
+    "pending": 0,
+    "confirmed": 22,
+    "ready": true,
+    "total": 11280
+  },
+  "photosStored": 6
+}
