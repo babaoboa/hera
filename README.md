@@ -59,3 +59,66 @@ submissions are simulated and saved locally; the presentation UI has no demo lab
 
 ---
 
+## how it works
+
+```mermaid
+flowchart LR
+  U[You] -->|message + policy PDF| C["/api/chat<br/>AI SDK streamText"]
+  C --> P{prepareStep<br/>intake router}
+  P -->|no policy yet| R[request_policy<br/>upload card]
+  P -->|PDF waiting| X[read_policy<br/>Nemotron → zod schema]
+  P -->|details missing| H[ask_home_details<br/>form card]
+  P -->|file ready| F[Feature registry]
+  F --> S[Shop<br/>OSM risk scan → quotes → draft]
+  F --> N[Negotiate<br/>rate review → email → approval]
+  F --> CL[Claim<br/>tracker → photos → inventory → proof of loss]
+  X --> DB[(SQLite<br/>household file)]
+  H --> DB
+  F <--> DB
+```
+
+the stuff we're actually proud of:
+
+**the intake can't be skipped.** agents LOVE skipping steps or just asking for stuff in plain text. so instead of praying the prompt works, the chat route uses the ai sdk's `prepareStep` as a little state machine over the household file. code decides which tool HAS to run next and forces it with `toolChoice`:
+
+1. load the file
+2. read the pdf
+3. ask for the policy if there isn't one
+4. ask only for the details this job still needs
+5. hand off to that feature's own `nextStep`
+
+the model does the talking, the code does the routing.
+
+**policy reading.** `unpdf` pulls the text, then nemotron fills a strict zod schema: insurer, limits, deductibles, coverages (covered / limited / not covered), endorsements, exclusions, deadlines, discounts. junk values get filtered and everything is validated before it touches the db. results are cached by the pdf's sha-256, so the same policy never gets read twice.
+
+**fallback chains everywhere.** every model call has a first-chunk timeout and a backup. policy reading goes nemotron ultra → nemotron lightning → a clean "upload it again" error instead of hanging forever. vision goes nemotron 3.5 super vl → llama 3.2 90b vision.
+
+**feature plugins.** each feature (`lib/hera/features/*`) is its own module: tools, approval tools, instructions and a `nextStep` router. the chat route merges them, and the ui renders each tool result as its own card (`components/hera/features/*`). adding a 4th job = adding one folder.
+
+**human in the loop.** anything that speaks for you is a client tool (`confirm_*`). it shows up as an approval card, the agent pauses, and it only picks back up when you click (`addToolOutput` + `sendAutomaticallyWhen`).
+
+**chats that don't double-fire.** conversations are saved in sqlite and each turn takes a lock. a second request for the same chat while one is running gets a 409, so you never get two agents fighting over the same file.
+
+**context diet.** big feature data (claim photos, quote tables, drafts) only goes to the model as keys. the ui reads the full thing straight from the db.
+
+### which model does what
+
+| job | model (nvidia nim) |
+| --- | --- |
+| the agent: conversation, tool calls, routing | `nvidia/nemotron-3-ultra-550b-a55b` |
+| backup agent + fast policy reading | `nvidia/nemotron-3.5-lightning-30b-a3b` |
+| policy pdf → structured coverage (schema-constrained) | nemotron ultra, lightning as backup |
+| flood photos → itemized contents inventory | `nvidia/nemotron-3.5-super-vl-120b-a12b`, `meta/llama-3.2-90b-vision-instruct` as backup |
+
+you can swap providers with one env var (anthropic and vercel ai gateway work too, see `env.local.example`)
+
+### token efficiency
+
+- **each policy gets read once.** the sha-256 cache means re-uploading or re-running the demo costs 0 tokens
+- **code picks the next tool**, so the model doesn't burn turns figuring out what to do. capped at 8 steps per turn
+- **lean context.** the model only sees the keys of bulky feature data
+- **thinking is off for chat turns** (`enable_thinking: false` on nemotron). flip it back on with `HERA_THINKING=1`
+- **only asks what's missing.** the details form only shows the sections this job still needs
+
+---
+
