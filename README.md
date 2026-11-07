@@ -141,3 +141,16 @@ we'd rather tell you than have you find out lol
 | openstreetmap geocoding + fire hall / hydrant / water distances | sending emails and filing claims: **nothing ever gets sent** |
 | household file, chats and claims saved in sqlite | the insurer's reply to the negotiation email |
 
+## if we shipped this for real (not built yet)
+
+honest list of what prod would need:
+
+- field-level encryption for pii at rest (aes-256-gcm, keys in a kms). right now it's a local file
+- redacting pii before anything goes to a model
+- a prompt-injection guard on uploaded pdfs, because a policy pdf is untrusted input
+- an eval set of real policies to measure extraction accuracy
+- real broker/insurer apis instead of the scripted browser, plus pulling your policy straight out of gmail
+- an audit log of every action you approved
+
+---
+
