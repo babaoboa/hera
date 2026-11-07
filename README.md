@@ -122,3 +122,22 @@ you can swap providers with one env var (anthropic and vercel ai gateway work to
 
 ---
 
+## security stuff (that we actually do)
+
+- api keys only live server-side in `.env.local` (gitignored). every model call happens in an api route, so the browser never sees a key
+- your household file is a local sqlite file (`data/hera.db`), also gitignored
+- date of birth is flagged sensitive and only asked for when a job needs it (just shopping)
+- nothing gets sent or filed without you clicking approve. ever.
+
+## what's real vs. fake
+
+we'd rather tell you than have you find out lol
+
+| real | simulated (labelled in the ui) |
+| --- | --- |
+| reading your policy pdf into structured coverage | **birchwood mutual** and every insurer shown are made up |
+| claim deadlines + limits pulled from your policy | insurer portals: the "hera is browsing" desktop is a scripted replay |
+| vision inventory from your photos | quotes are samples (there's no public quote api) |
+| openstreetmap geocoding + fire hall / hydrant / water distances | sending emails and filing claims: **nothing ever gets sent** |
+| household file, chats and claims saved in sqlite | the insurer's reply to the negotiation email |
+
