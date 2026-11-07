@@ -1,0 +1,3 @@
+Source: https://github.com/slev12397/beautiful-ui
+Commit: 44a274e598395ab61e7c96c26fda2758780253b7
+Imported Ice Cream Harness and its dependencies. Icon library imports replaced with Hugeicons.
