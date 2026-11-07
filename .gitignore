@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hera local database (contains personal info)
+/data
+
+# Generated delivery bundles and extracted application snapshots
+/output/*
+!/output/claim-demo-kit/
