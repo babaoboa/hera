@@ -7,31 +7,27 @@ import {
   Cancel01Icon,
   Edit02Icon,
   Home01Icon,
-  IceCream02Icon,
   LogoutSquare02Icon,
   Search01Icon,
   Settings01Icon,
   SidebarLeft01Icon,
   Tick02Icon,
-  UserAdd01Icon,
 } from "@hugeicons/core-free-icons";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import GlideMenu from "@/components/primitives/GlideMenu";
+import { DEMO_USER as USER } from "@/lib/demo-user";
 
 /* ─────────────────────────────────────────────────────────
  * SIDEBAR NAV
  * Shared by the design-system preview and the harness shell:
- * compact workspace switcher, primary navigation, searchable
+ * compact user switcher, primary navigation, searchable
  * chat history, and a collapse that preserves icon alignment.
  * ───────────────────────────────────────────────────────── */
 
-const WORKSPACE = { key: "creamery", name: "hero", monogram: "H" };
-
-const NAV_ITEMS = [
+const NAV_ITEMS: { key: string; label: string; icon: ReactNode; count?: string }[] = [
   { key: "home", label: "Home", icon: <HugeiconsIcon icon={Home01Icon} size={18} /> },
-  { key: "invite", label: "Invite users", icon: <HugeiconsIcon icon={UserAdd01Icon} size={18} />, count: "3/10" },
 ];
 
 export type SidebarRecent = {
@@ -53,6 +49,7 @@ const DEFAULT_RECENTS: SidebarRecent[] = [
 
 type SidebarNavProps = {
   activeTitle?: string | null;
+  activeChatId?: string;
   className?: string;
   fill?: boolean;
   onNewChat?: () => void;
@@ -60,8 +57,8 @@ type SidebarNavProps = {
   /** controlled primary-nav selection (e.g. "home" | "invite") */
   activeNav?: string;
   onNavigate?: (key: string) => void;
-  /** footer call-to-action — defaults to the demo "Upgrade" button */
-  footerLabel?: string;
+  /** footer call-to-action — defaults to the demo "Upgrade" button; null hides it */
+  footerLabel?: string | null;
   footerIcon?: ReactNode;
   onFooterClick?: () => void;
   recents?: SidebarRecent[];
@@ -139,7 +136,7 @@ function RailButton({
   );
 }
 
-function WorkspaceMenu({
+function UserMenu({
   position,
   onClose,
 }: {
@@ -148,7 +145,7 @@ function WorkspaceMenu({
 }) {
   return createPortal(
     <div
-      data-workspace-menu
+      data-user-menu
       className="fixed z-50 w-64 rounded-[14px] bg-surface p-1.5 shadow-overlay"
       style={{
         top: position.top,
@@ -164,17 +161,16 @@ function WorkspaceMenu({
           onClick={onClose}
           className="relative z-10 flex h-10 w-full items-center gap-1.5 rounded-[8px] px-2 text-left"
         >
-          <span className="flex size-6 shrink-0 items-center justify-center rounded-[7px] bg-ink text-[11px] font-semibold text-surface">
-            {WORKSPACE.monogram}
+          <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-ink text-[11px] font-semibold text-surface">
+            {USER.monogram}
           </span>
-          <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-ink">{WORKSPACE.name}</span>
+          <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-ink">{USER.name}</span>
           <span className="shrink-0 text-ink"><HugeiconsIcon icon={Tick02Icon} size={18} /></span>
         </button>
         <div className="my-1 h-px bg-line" />
         {[
-          { label: "New workspace", icon: <HugeiconsIcon icon={Add01Icon} size={16} /> },
-          { label: "Workspace settings", icon: <HugeiconsIcon icon={Settings01Icon} size={16} /> },
-          { label: "Invite team members", icon: <HugeiconsIcon icon={UserAdd01Icon} size={16} /> },
+          { label: "Add account", icon: <HugeiconsIcon icon={Add01Icon} size={16} /> },
+          { label: "Account settings", icon: <HugeiconsIcon icon={Settings01Icon} size={16} /> },
         ].map((item) => (
           <button
             key={item.label}
@@ -205,6 +201,7 @@ function WorkspaceMenu({
 
 export default function SidebarNav({
   activeTitle,
+  activeChatId,
   className = "",
   fill = false,
   onNewChat,
@@ -224,27 +221,27 @@ export default function SidebarNav({
     onNavigate?.(key);
   };
   const [demoActiveTitle, setDemoActiveTitle] = useState<string | null>(null);
-  const [workspaceOpen, setWorkspaceOpen] = useState(false);
-  const [workspacePosition, setWorkspacePosition] = useState({ top: 0, left: 0 });
+  const [userOpen, setUserOpen] = useState(false);
+  const [userPosition, setUserPosition] = useState({ top: 0, left: 0 });
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const workspaceButtonRef = useRef<HTMLButtonElement>(null);
+  const userButtonRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const selectedTitle = activeTitle === undefined ? demoActiveTitle : activeTitle;
   const visibleRecents = recents.filter((item) => item.label.toLowerCase().includes(query.trim().toLowerCase()));
 
   useEffect(() => {
-    if (!workspaceOpen) return;
+    if (!userOpen) return;
     const close = (event: PointerEvent) => {
       const target = event.target as Element;
-      if (!target.closest("[data-workspace-trigger]") && !target.closest("[data-workspace-menu]")) {
-        setWorkspaceOpen(false);
+      if (!target.closest("[data-user-trigger]") && !target.closest("[data-user-menu]")) {
+        setUserOpen(false);
       }
     };
     document.addEventListener("pointerdown", close);
     return () => document.removeEventListener("pointerdown", close);
-  }, [workspaceOpen]);
+  }, [userOpen]);
 
   useEffect(() => {
     if (searchOpen) searchRef.current?.focus();
@@ -252,7 +249,7 @@ export default function SidebarNav({
 
   const collapse = () => {
     setCollapsed(true);
-    setWorkspaceOpen(false);
+    setUserOpen(false);
     setSearchOpen(false);
     setQuery("");
   };
@@ -260,7 +257,7 @@ export default function SidebarNav({
   return (
     <aside
       data-sidebar-collapsed={collapsed}
-      aria-label="Workspace navigation"
+      aria-label="Main navigation"
       className={`relative flex shrink-0 overflow-hidden transition-[width] ${fill ? "h-full" : "h-[600px]"} ${className}`}
       style={{
         width: collapsed ? SIDEBAR_MOTION.collapsedWidth : SIDEBAR_MOTION.expandedWidth,
@@ -274,33 +271,34 @@ export default function SidebarNav({
       <div className="flex min-h-0 w-[224px] shrink-0 flex-col">
         <div className="relative mb-2.5 h-10 shrink-0">
           <button
-            ref={workspaceButtonRef}
-            data-workspace-trigger
+            ref={userButtonRef}
+            data-user-trigger
             type="button"
-            aria-expanded={workspaceOpen}
+            aria-label={`Switch user: ${USER.name}`}
+            aria-expanded={userOpen}
             aria-hidden={collapsed}
             tabIndex={collapsed ? -1 : 0}
             onClick={() => {
-              if (!workspaceOpen && workspaceButtonRef.current) {
-                const rect = workspaceButtonRef.current.getBoundingClientRect();
-                setWorkspacePosition({ top: rect.bottom + 6, left: rect.left });
+              if (!userOpen && userButtonRef.current) {
+                const rect = userButtonRef.current.getBoundingClientRect();
+                setUserPosition({ top: rect.bottom + 6, left: rect.left });
               }
-              setWorkspaceOpen((open) => !open);
+              setUserOpen((open) => !open);
             }}
             className="sidebar-workspace-control absolute left-2 top-1 flex h-8 w-[164px] items-center rounded-[8px] px-2 text-left transition-[background-color,transform] duration-100 hover:bg-hover-2 active:scale-[0.99]"
           >
-            <span className="sidebar-logo flex size-5 shrink-0 items-center justify-center text-ink">
-              <HugeiconsIcon icon={IceCream02Icon} size={18} />
+            <span className="sidebar-logo flex size-5 shrink-0 items-center justify-center rounded-full bg-ink text-[10px] font-semibold text-surface">
+              {USER.monogram}
             </span>
             <span className="sidebar-copy ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-ink-2">
-              {WORKSPACE.name}
+              {USER.name}
             </span>
             <span className="sidebar-copy ml-1 flex shrink-0 text-ink-3">
               <HugeiconsIcon icon={ArrowDown01Icon} size={16} />
             </span>
           </button>
 
-          {workspaceOpen && <WorkspaceMenu position={workspacePosition} onClose={() => setWorkspaceOpen(false)} />}
+          {userOpen && <UserMenu position={userPosition} onClose={() => setUserOpen(false)} />}
 
           <button
             type="button"
@@ -409,7 +407,7 @@ export default function SidebarNav({
 
           <GlideGroup>
             {visibleRecents.map((item) => {
-              const active = item.label === selectedTitle;
+              const active = activeChatId === undefined ? item.label === selectedTitle : item.id === activeChatId;
               return (
                 <button
                   key={item.id}
@@ -437,16 +435,18 @@ export default function SidebarNav({
           </GlideGroup>
         </div>
 
-        <div className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3">
-          <button
-            type="button"
-            onClick={onFooterClick ?? onNewChat}
-            className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
-          >
-            {footerIcon}
-            {footerLabel}
-          </button>
-        </div>
+        {footerLabel && (
+          <div className="sidebar-copy mx-2 mt-3 w-[208px] border-t border-line pt-3">
+            <button
+              type="button"
+              onClick={onFooterClick ?? onNewChat}
+              className="flex h-8 w-full items-center justify-center gap-1.5 rounded-control bg-hover-2 text-[12.5px] font-medium text-ink transition-[background-color,transform] duration-150 hover:bg-line-strong active:scale-[0.98]"
+            >
+              {footerIcon}
+              {footerLabel}
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );
