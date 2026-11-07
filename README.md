@@ -1,61 +1,51 @@
 # hera
 
-your home insurance, except it actually works for you
+home insurance, but it's actually on your side for once
 
-okay so basically: insurance companies have a whole army of ai doing underwriting, fraud scoring, claim triage, all of it. you, the person literally paying them, get a 30 page pdf you've never read. hera fixes ts.
+so basically insurance companies have ai everywhere now (88% of us auto insurers in an [naic survey](https://www.thewealthadvisor.com/article/naic-survey-88-insurers-are-using-ai-or-machine-learning) said they use it, plan to, or are looking into it) for pricing, fraud, claims, all of it. and you, the person literally paying them, get a 30 page pdf you've never opened. we thought that was kinda backwards so we built hera.
 
-you give hera your policy pdf once and it does the three things nobody wants to do:
+you give hera your policy once and it does the 3 things nobody wants to do:
 
-1. **"i just got into a flood"**: walks you through the whole claim, step by step
-2. **"negotiate a lower rate"**: finds the discounts you're missing and writes the email to your insurer
-3. **"find me better insurance"**: checks your home's actual risk and compares quotes
+1. **"i just got into a flood"** - it walks you through the whole claim
+2. **"negotiate a lower rate"** - it finds the discounts you're missing and writes the email to your insurer
+3. **"find me better insurance"** - it looks at where your house actually is and compares quotes
 
-built in one day at **cortex by redshifted** (ottawa) for "ai for humanity"
-
-team: pj, ___, ___, ___
+made in one day at cortex by redshifted in ottawa (theme: ai for humanity) by **pramsu, baran, annaji and wesley**
 
 ![negotiate flow: drafted email, you approve, simulated reply from the (fake) insurer](docs/negotiate.png)
 
 ---
 
-## why this matters (not just vibes)
+## why we care
 
-- **1 in 3 canadian homeowners think their normal policy covers floods when it doesn't** ([ratesdotca / bnn bloomberg, 2022](https://insurancebusinessmag.com/ca/news/flood/one-in-three-canadians-think-their-home-insurance-policies-cover-water-damage-428755.aspx))
-- flood coverage is available to ~94% of canadian homes now, and take-up went from 26% in 2017 to 71% in 2023 ([ibc, 2026](https://www.insurancebusinessmag.com/ca/news/catastrophe/94-of-canadian-homes-can-now-access-overland-flood-insurance-ibc-finds-583572.aspx)). so more people HAVE it than ever, they just don't know their limits, deductibles or deadlines until the basement is already full
-- ottawa flooded in 2017 AND 2019. a claim hits you at literally your worst moment: 30 page policy, 90 day proof-of-loss deadline, and you have to list everything you owned from memory. very cooked
-- renewals go up every year and most people never ask for the discounts they already qualify for
+ottawa flooded in 2017 and then AGAIN in 2019. and the thing is, most people only find out what their insurance covers after the basement is already full.
 
-hera reads the fine print, does the paperwork, and asks before it does anything for you.
+- 1 in 3 canadian homeowners think their regular policy covers floods when it doesn't ([ratesdotca / bnn bloomberg, 2022](https://insurancebusinessmag.com/ca/news/flood/one-in-three-canadians-think-their-home-insurance-policies-cover-water-damage-428755.aspx))
+- flood coverage is available to like 94% of canadian homes now, and take-up went from 26% in 2017 to 71% in 2023 ([ibc, 2026](https://www.insurancebusinessmag.com/ca/news/catastrophe/94-of-canadian-homes-can-now-access-overland-flood-insurance-ibc-finds-583572.aspx)). so tons of people have it, they just don't know their limits or deductibles or deadlines
+- the government promised a national flood insurance program for high-risk homes that can't get coverage. it was supposed to launch in april 2026 and it still isn't here ([insurance business, 2026](https://www.insurancebusinessmag.com/ca/news/catastrophe/prairie-storms-add-728-million-to-canadas-flood-bill-as-national-backstop-misses-launch-target-582735.aspx))
+- and when you do file a claim it's at the worst moment of your life: 30 page policy, 90 days to get your proof of loss in, and you have to list every single thing you owned from memory. very cooked
 
 ---
 
 ## what it does
 
-everything runs off **one household file** (your policy + your home) saved in a local sqlite db. hera collects it once and every feature reuses it, so it never asks you the same thing twice.
+everything runs off one "household file" (your policy + your house) in a local sqlite db. hera asks for it once and then every feature uses it, so it never asks you the same thing twice.
 
-### 1. "i just got into a flood"
+### "i just got into a flood"
 
-- opens a claim tracker with your policy’s relevant coverage, limits, deductible and deadline dates, plus a “before you clean up” checklist
-- prepares the first notice of loss and waits for approval
-- **camera-roll inventory**: choose photos from before or after the loss, even everyday photos with belongings in the background. hera identifies visible items and suggests replacement estimates in CAD
-- review each belonging, edit its details or value, confirm it was lost or damaged, and remove duplicates. add anything the photos missed without preset claim amounts
-- **receipt reading**: attach a receipt image to a belonging. hera extracts its purchase amount, merchant and date, keeping the original purchase price separate from today’s replacement estimate
-- explains policy limits and settlement terms, then offers an optional hotel + extra living-expenses step
-- shows a final claim review and waits for approval of the proof of loss. unconfirmed belongings cannot be submitted
+it opens a claim tracker that shows what's actually covered (for our demo policy that's overland water up to $50k with a $2,500 deductible) and the real deadline dates pulled from your policy. then you get a "before you clean up" checklist, because the adjuster needs to see the damage before you throw it out (most people have no idea).
 
-submissions are simulated and saved locally; the presentation UI has no demo labels. failed photo analysis never inserts fabricated belongings. [full walkthrough, research sources and presentation notes](docs/claim-flow.md).
+it drafts your first notice of loss and waits for you to approve it. then you take pics of the room, a vision model figures out what got damaged, you add anything it missed, and it adds it all up against your contents limit. it also keeps track of hotel and food money for additional living expenses.
 
-### 2. negotiate a lower rate
+right before the sworn proof of loss it does an honesty check (how many items have photos vs. are from memory), because if anything on a proof of loss is false the whole claim can get voided.
 
-- looks at your premium, renewal history, the discounts you already get, and the ones your file says you SHOULD get (monitored alarm, leak sensors, sump pump, claims-free years...)
-- builds a case card with the $$ at stake
-- types the email into a compose window and waits for you to hit approve
+### "negotiate a lower rate"
 
-### 3. find me better insurance
+it looks at what you pay, how much it went up (our demo household went up 30% in 3 years), what discounts you already get, and which ones your file says you should be getting (alarm, leak sensors, sump pump, newer roof, no claims). it builds a case card with how much money is on the table, writes the email in a compose window, and does nothing until you hit approve.
 
-- geocodes your address with openstreetmap and measures the distance to the nearest fire hall, hydrant and river/lake (these literally change your price irl)
-- builds a risk profile and finds gaps in your current coverage
-- fills out each insurer's quote form with your file, compares them side by side, and drafts a quote request for the one you pick
+### "find me better insurance"
+
+it finds your house on openstreetmap and measures how far you are from the nearest fire hall, hydrant and river (this stuff actually changes your price irl), builds a risk profile, points out gaps in your current coverage, then fills out quote forms and compares them side by side.
 
 ---
 
@@ -77,80 +67,71 @@ flowchart LR
   F <--> DB
 ```
 
-the stuff we're actually proud of:
+stuff we ran into today and how we fixed it:
 
-**the intake can't be skipped.** agents LOVE skipping steps or just asking for stuff in plain text. so instead of praying the prompt works, the chat route uses the ai sdk's `prepareStep` as a little state machine over the household file. code decides which tool HAS to run next and forces it with `toolChoice`:
-
-1. load the file
-2. read the pdf
-3. ask for the policy if there isn't one
-4. ask only for the details this job still needs
-5. hand off to that feature's own `nextStep`
-
-the model does the talking, the code does the routing.
-
-**policy reading.** `unpdf` pulls the text, then nemotron fills a strict zod schema: insurer, limits, deductibles, coverages (covered / limited / not covered), endorsements, exclusions, deadlines, discounts. junk values get filtered and everything is validated before it touches the db. results are cached by the pdf's sha-256, so the same policy never gets read twice.
-
-**fallback chains everywhere.** every model call has a first-chunk timeout and a backup. policy reading goes nemotron ultra → nemotron lightning → a clean "upload it again" error instead of hanging forever. vision goes nemotron 3.5 super vl → llama 3.2 90b vision.
-
-**feature plugins.** each feature (`lib/hera/features/*`) is its own module: tools, approval tools, instructions and a `nextStep` router. the chat route merges them, and the ui renders each tool result as its own card (`components/hera/features/*`). adding a 4th job = adding one folder.
-
-**human in the loop.** anything that speaks for you is a client tool (`confirm_*`). it shows up as an approval card, the agent pauses, and it only picks back up when you click (`addToolOutput` + `sendAutomaticallyWhen`).
-
-**chats that don't double-fire.** conversations are saved in sqlite and each turn takes a lock. a second request for the same chat while one is running gets a 409, so you never get two agents fighting over the same file.
-
-**context diet.** big feature data (claim photos, quote tables, drafts) only goes to the model as keys. the ui reads the full thing straight from the db.
+- **the model kept skipping steps.** it would just ask for your policy in text instead of showing the upload card, or try to negotiate before reading the policy. so now the chat route uses the ai sdk's `prepareStep` as a little state machine. code decides which tool has to run next and forces it with `toolChoice`: load your file, read the pdf, ask for the policy if there isn't one, ask only for the details this job needs, then hand off to the feature. the model does the talking, the code does the order.
+- **reading policies.** `unpdf` pulls the text out, then nemotron fills a strict zod schema (insurer, limits, deductibles, what's covered / limited / not covered, endorsements, exclusions, deadlines, discounts). junk values get filtered and everything gets validated before it goes in the db.
+- **nim would sometimes just hang** on a policy read, so every model call has a timeout and a backup model (ultra, then lightning, then a "please upload it again" instead of spinning forever). vision does the same (nemotron vl, then llama 3.2 vision). policy reads are also cached by the pdf's sha-256, so the same file never gets read twice.
+- **thinking mode made it way too slow**, so it's off for chat (`enable_thinking: false`). turn it back on with `HERA_THINKING=1`.
+- **approvals.** anything that does something for you (sending an email, filing the claim) is a client tool. it shows up as an approval card and the agent literally pauses until you click.
+- **features are plugins.** each one lives in `lib/hera/features/*` with its own tools, instructions and "what's next" logic, and the ui renders each result as its own card. adding a 4th feature is just adding a folder.
+- **chats** are saved in sqlite and each turn takes a lock, so two agents can't fight over the same file (the second request gets a 409).
 
 ### which model does what
 
 | job | model (nvidia nim) |
 | --- | --- |
-| the agent: conversation, tool calls, routing | `nvidia/nemotron-3-ultra-550b-a55b` |
+| the agent: talking, tool calls, routing | `nvidia/nemotron-3-ultra-550b-a55b` |
 | backup agent + fast policy reading | `nvidia/nemotron-3.5-lightning-30b-a3b` |
-| policy pdf → structured coverage (schema-constrained) | nemotron ultra, lightning as backup |
-| flood photos → itemized contents inventory | `nvidia/nemotron-3.5-super-vl-120b-a12b`, `meta/llama-3.2-90b-vision-instruct` as backup |
+| policy pdf → structured coverage | nemotron ultra, lightning as backup |
+| flood photos → list of damaged stuff | `nvidia/nemotron-3.5-super-vl-120b-a12b`, `meta/llama-3.2-90b-vision-instruct` as backup |
 
-you can swap providers with one env var (anthropic and vercel ai gateway work too, see `env.local.example`)
+you can switch providers with one env var (anthropic and vercel ai gateway work too, see `env.local.example`)
 
-### token efficiency
+### keeping tokens down
 
-- **each policy gets read once.** the sha-256 cache means re-uploading or re-running the demo costs 0 tokens
-- **code picks the next tool**, so the model doesn't burn turns figuring out what to do. capped at 8 steps per turn
-- **lean context.** the model only sees the keys of bulky feature data
-- **thinking is off for chat turns** (`enable_thinking: false` on nemotron). flip it back on with `HERA_THINKING=1`
-- **only asks what's missing.** the details form only shows the sections this job still needs
+- each policy gets read once and then it's cached, so re-running the demo costs 0 tokens
+- code picks the next tool, so the model doesn't waste turns figuring out what to do (max 8 steps per turn)
+- big stuff like claim photos and quote tables only goes to the model as names, the ui reads the full thing from the db
+- thinking is off
+- the form only asks for what's missing for the job you picked
 
 ---
 
-## security stuff (that we actually do)
+## security (the stuff we actually do)
 
-- api keys only live server-side in `.env.local` (gitignored). every model call happens in an api route, so the browser never sees a key
-- your household file is a local sqlite file (`data/hera.db`), also gitignored
-- date of birth is flagged sensitive and only asked for when a job needs it (just shopping)
-- nothing gets sent or filed without you clicking approve. ever.
+- api keys stay on the server in `.env.local` (gitignored), the browser never sees them
+- your household file is a local sqlite file, also gitignored
+- date of birth is marked sensitive and only asked for when you shop for quotes
+- nothing gets sent or filed without you clicking approve
 
-## what's real vs. fake
+## what's real and what's fake
 
-we'd rather tell you than have you find out lol
+we'd rather just tell you lol
 
-| real | simulated (labelled in the ui) |
+| real | fake (and labelled in the app) |
 | --- | --- |
-| reading your policy pdf into structured coverage | **birchwood mutual** and every insurer shown are made up |
-| claim deadlines + limits pulled from your policy | insurer portals: the "hera is browsing" desktop is a scripted replay |
-| vision inventory from your photos | quotes are samples (there's no public quote api) |
-| openstreetmap geocoding + fire hall / hydrant / water distances | sending emails and filing claims: **nothing ever gets sent** |
-| household file, chats and claims saved in sqlite | the insurer's reply to the negotiation email |
+| reading your policy pdf into structured coverage | **birchwood mutual** and every other insurer in the app are made up |
+| claim deadlines + limits pulled from your policy | the "hera is browsing" desktop is a scripted replay |
+| the vision inventory from your photos | quotes are samples (there's no public quote api) |
+| openstreetmap + fire hall / hydrant / water distances | sending emails and filing claims: **nothing actually gets sent** |
+| your file, chats and claims saved in sqlite | the insurer's reply to the negotiation email |
 
-## if we shipped this for real (not built yet)
+---
 
-honest list of what prod would need:
+## where we'd take it next
 
-- field-level encryption for pii at rest (aes-256-gcm, keys in a kms). right now it's a local file
-- redacting pii before anything goes to a model
-- a prompt-injection guard on uploaded pdfs, because a policy pdf is untrusted input
-- an eval set of real policies to measure extraction accuracy
-- real broker/insurer apis instead of the scripted browser, plus pulling your policy straight out of gmail
-- an audit log of every action you approved
+we looked into what it would take to make this actually real:
+
+1. **real flood maps.** ontario conservation authorities publish their regulated floodplain maps as open data ([conservation ontario open data hub](https://library.mcmaster.ca/maps/geospatial/conservation-ontario-co-open-data-hub)) and nrcan keeps a canada-wide [flood map inventory](https://geo.ca/flood-mapping/flood-map-gallery/canada-flood-map-inventory/). checking your address against those would turn our estimate into "your house is in the 1-in-100-year floodplain"
+2. **warn you before the flood.** watch environment canada alerts and river forecasts, and when your area's at risk, text you: move stuff upstairs, take "before" photos now, here's what you're covered for. the claim basically starts before the water does
+3. **inventory before anything happens.** do a 2 minute video walk through your house now and hera builds your contents list, so after a flood it's a before/after comparison instead of trying to remember every fork you owned
+4. **doing the computer stuff for real.** a real browser agent filling real quote forms, and pulling your policy + renewal notice straight from your email (still with approval before anything gets submitted)
+5. **calling your insurer for you.** a voice agent that waits on hold, asks for the discounts, and reports back
+6. **scanned policies.** lots of policies are scans or phone pics, so read the page images with the vision model instead of just pdf text
+7. **the national flood program.** when it finally launches, check if you qualify and walk you through signing up
+8. **text it.** sms / whatsapp, because nobody's opening a web app while their basement floods
+9. **prod stuff.** encrypt personal info at rest (aes-256-gcm, keys in a kms), strip personal info before it goes to a model, guard against prompt injection in uploaded pdfs (a pdf is untrusted input), an eval set of real policies to measure how accurate extraction is, and an audit log of everything you approved
 
 ---
 
@@ -164,7 +145,14 @@ cp env.local.example .env.local   # add NVIDIA_API_KEY (or another provider)
 npm run dev                       # http://localhost:3000
 ```
 
-try it with the demo policy at `public/demo/birchwood-policy.pdf` (fake insurer). type *"i just got into a flood"* and drop the pdf in when hera asks.
+then in another terminal, load the demo household (maya patel, fake insurer birchwood mutual):
+
+```bash
+npm run seed            # home details + premium history, upload the policy yourself in the chat
+npm run seed -- --full  # also loads the policy, so all 3 features are ready right away
+```
+
+refresh the page, type *"i just got into a flood"* and drop in `public/demo/birchwood-policy.pdf` when hera asks.
 
 tests: `node --test tests/`
 
@@ -174,7 +162,8 @@ tests: `node --test tests/`
 app/api/chat          chat route: intake router, tools, streaming
 app/api/profile       household file (GET / POST patch / DELETE reset)
 app/api/chats         saved conversations
-lib/hera/             db, policy + profile schemas, extraction, model config
+app/api/dev/seed      demo seed (npm run seed)
+lib/hera/             db, policy + profile schemas, extraction, model config, seed
 lib/hera/features/    shop · negotiate · claim (tools + routing per feature)
 components/hera/      chat ui, cards, agent desktop, approval cards
 ```
