@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import IceCreamHarness from "@/components/site/IceCreamHarness";
+import HeraHarness from "@/components/hera/HeraHarness";
 
 export const metadata: Metadata = {
-  title: "Ice Cream Harness — Beautiful UI",
-  description:
-    "An interactive chat window built entirely from Beautiful UI primitives. Ask a question and watch the agent think, stream, and build the answer out of live components.",
+  title: "Hera — your home insurance agent",
+  description: "Hera reads your policy, keeps your home file, and handles insurance for you.",
 };
 
-export default function HarnessPage() {
-  return <IceCreamHarness />;
+export default function Home() {
+  return <HeraHarness />;
 }
