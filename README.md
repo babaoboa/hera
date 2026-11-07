@@ -154,3 +154,29 @@ honest list of what prod would need:
 
 ---
 
+## run it
+
+needs **node 22.13+** (for the built-in `node:sqlite`)
+
+```bash
+npm install
+cp env.local.example .env.local   # add NVIDIA_API_KEY (or another provider)
+npm run dev                       # http://localhost:3000
+```
+
+try it with the demo policy at `public/demo/birchwood-policy.pdf` (fake insurer). type *"i just got into a flood"* and drop the pdf in when hera asks.
+
+tests: `node --test tests/`
+
+### where stuff lives
+
+```
+app/api/chat          chat route: intake router, tools, streaming
+app/api/profile       household file (GET / POST patch / DELETE reset)
+app/api/chats         saved conversations
+lib/hera/             db, policy + profile schemas, extraction, model config
+lib/hera/features/    shop · negotiate · claim (tools + routing per feature)
+components/hera/      chat ui, cards, agent desktop, approval cards
+```
+
+toodles :3
