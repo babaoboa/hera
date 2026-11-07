@@ -15,13 +15,13 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "re
 
 const STAGES = [800, 600, 1800, 2600, 1600];
 
-function useSequence(steps: number[]) {
+function useSequence(steps: number[], enabled = true) {
   const [stage, setStage] = useState(0);
   useEffect(() => {
-    if (stage >= steps.length - 1) return;
+    if (!enabled || stage >= steps.length - 1) return;
     const t = setTimeout(() => setStage((s) => s + 1), steps[stage]);
     return () => clearTimeout(t);
-  }, [stage, steps]);
+  }, [stage, steps, enabled]);
   return stage;
 }
 
@@ -97,6 +97,7 @@ export default function ThinkingState({
   active,
   done,
   icon,
+  streaming,
 }: {
   variant?: string;
   onSettled?: () => void;
@@ -106,8 +107,11 @@ export default function ThinkingState({
   done?: string;
   /** override the header glyph (defaults to the sparkle) */
   icon?: ReactNode;
+  /** Drive live traces from the model instead of the demo sequence. */
+  streaming?: boolean;
 }) {
-  const stage = useSequence(STAGES);
+  const sequenceStage = useSequence(STAGES, streaming === undefined);
+  const stage = streaming === undefined ? sequenceStage : streaming ? 2 : 4;
   const [manualExpanded, setManualExpanded] = useState<boolean | null>(null);
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const base = VARIANTS[variant] ?? VARIANTS.Steps;
@@ -120,12 +124,12 @@ export default function ThinkingState({
   const autoExpanded = stage >= 1 && stage < 4;
   const expanded = manualExpanded ?? autoExpanded;
   const working = stage < 3;
-  const visible = stage < 2 ? 0 : stage === 2 ? Math.min(2, v.rows.length) : v.rows.length;
+  const visible = streaming !== undefined ? v.rows.length : stage < 2 ? 0 : stage === 2 ? Math.min(2, v.rows.length) : v.rows.length;
   const traceRef = useRef<HTMLDivElement>(null);
   const [lineHeight, setLineHeight] = useState(0);
   useLayoutEffect(() => {
     if (traceRef.current) setLineHeight(traceRef.current.offsetHeight);
-  }, [visible, expanded, variant, stage]);
+  }, [visible, expanded, variant, stage, rows]);
 
   /* let embedders sequence content after the trace settles */
   const settledRef = useRef(false);
@@ -231,7 +235,7 @@ export default function ThinkingState({
                     <span className="size-3 shrink-0 rounded-full border-[1.5px] border-line-strong border-t-ink-2" style={{ animation: "spin 700ms linear infinite" }} />
                   )
                 )}
-                <span className={`min-w-0 truncate text-[12.5px] ${variant === "Reasoning" ? "whitespace-normal leading-relaxed text-ink-2" : "font-medium text-ink"} ${variant === "Search" ? "animated-underline" : ""}`}>
+                <span className={`min-w-0 text-[12.5px] ${variant === "Reasoning" ? "whitespace-pre-wrap break-words leading-relaxed text-ink-2" : "truncate font-medium text-ink"} ${variant === "Search" ? "animated-underline" : ""}`}>
                   {row.primary}
                 </span>
                 {row.secondary && (
@@ -282,7 +286,7 @@ export default function ThinkingState({
               }
 
               return (
-                <div key={row.primary} className={rowClass} style={animation}>
+                <div key={i} className={rowClass} style={animation}>
                   {content}
                 </div>
               );
