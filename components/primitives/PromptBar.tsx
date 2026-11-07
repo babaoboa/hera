@@ -80,30 +80,30 @@ type Source = {
 
 const SOURCES: Source[] = [
   { key: "attach", name: "Add photos & files", desc: "Upload from your computer", glyph: "clip", attach: true },
-  { key: "scoop", name: "Scoop Data", desc: "Sales & churn metrics", glyph: "chart" },
-  { key: "flavors", name: "Flavor records", desc: "26 makers, tags, links", glyph: "layers" },
-  { key: "web", name: "Web search", desc: "Real-time news and info", glyph: "globe" },
-  { key: "figma", name: "Figma", desc: "Design-to-code workflows", brand: "figma" },
-  { key: "slack", name: "Slack", desc: "Read and manage Slack", brand: "slack" },
-  { key: "gmail", name: "Gmail", desc: "Read and manage Gmail", brand: "gmail", connect: true },
+  { key: "policy", name: "Your policy", desc: "Coverage, limits and deadlines", glyph: "layers" },
+  { key: "home", name: "Your home file", desc: "Address, protection, details", glyph: "chart" },
+  { key: "map", name: "Neighbourhood", desc: "Fire hall, hydrant, water nearby", glyph: "globe" },
+  { key: "photos", name: "Damage photos", desc: "For your claim inventory", glyph: "clip" },
+  { key: "receipts", name: "Receipts", desc: "Hotel, meals, emergency repairs", glyph: "clip" },
+  { key: "gmail", name: "Gmail", desc: "Find your policy in your inbox", brand: "gmail", connect: true },
 ];
 
 const COMMANDS = [
-  { key: "compare", name: "/compare", desc: "Flavor vs. last summer" },
-  { key: "churn-plan", name: "/churn-plan", desc: "Draft a churn schedule" },
-  { key: "restock", name: "/restock", desc: "Build a reorder list" },
-  { key: "draft-email", name: "/draft-email", desc: "Write a supplier email" },
+  { key: "claim", name: "/claim", desc: "I just got into a flood" },
+  { key: "negotiate", name: "/negotiate", desc: "Lower my renewal rate" },
+  { key: "shop", name: "/shop", desc: "Find me better insurance" },
+  { key: "coverage", name: "/coverage", desc: "What does my policy cover?" },
   { key: "summarize", name: "/summarize", desc: "Digest the thread so far" },
 ];
 
 const MODELS = [
-  { key: "sprinkles-5", name: "Sprinkles 5", tag: "Flagship" },
-  { key: "vanilla-1", name: "Vanilla 1", tag: "Basic" },
-  { key: "freezer-burn", name: "Freezer Burn 0.4", tag: "Stale" },
+  { key: "nemotron-ultra", name: "Nemotron 3 Ultra", tag: "Agent" },
+  { key: "nemotron-lightning", name: "Nemotron 3.5 Lightning", tag: "Fast" },
+  { key: "nemotron-vl", name: "Nemotron 3.5 Super VL", tag: "Vision" },
 ];
 
-const FILES = ["flavor-chart.png", "summer-menu.pdf", "pos-export.csv"];
-const DICTATION = "Compare pistachio weekends to last summer";
+const FILES = ["birchwood-policy.pdf", "basement-photo.jpg", "hotel-receipt.pdf"];
+const DICTATION = "My basement flooded last night";
 
 /* self-running demo: walk the @ menu, then the / menu, and repeat.
  * Any pointer or key interaction hands control to the user. */
@@ -115,7 +115,7 @@ const AUTO_STEPS: {
   model?: string;
   hold: number;
 }[] = [
-  { draft: "", connect: false, model: "vanilla-1", hold: 1100 },
+  { draft: "", connect: false, model: "nemotron-lightning", hold: 1100 },
   { draft: "@", active: 0, hold: 900 },
   { draft: "@", active: 1, hold: 620 },
   { draft: "@", active: 4, hold: 620 },
@@ -128,7 +128,7 @@ const AUTO_STEPS: {
   { draft: "", hold: 800 },
   // open the model picker and upgrade to the flagship → rainbow sweep
   { draft: "", modelOpen: true, hold: 1200 },
-  { draft: "", model: "sprinkles-5", hold: 2400 },
+  { draft: "", model: "nemotron-ultra", hold: 2400 },
   { draft: "", hold: 900 },
 ];
 
@@ -163,7 +163,7 @@ export default function PromptBar({
   const [dismissed, setDismissed] = useState(false);
   const [plusOpen, setPlusOpen] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
-  const [model, setModel] = useState(MODELS[1]);
+  const [model, setModel] = useState(MODELS[0]);
   const [attachments, setAttachments] = useState<string[]>([]);
   const [connected, setConnected] = useState(false);
   const [active, setActive] = useState(0);
@@ -304,7 +304,7 @@ export default function PromptBar({
   const selectModel = (next: (typeof MODELS)[number]) => {
     setModel(next);
     setModelOpen(false);
-    if (next.key === "sprinkles-5") celebrate();
+    if (next.key === "nemotron-ultra") celebrate();
   };
 
   /* autoplay: apply the current step, then advance after its hold */
