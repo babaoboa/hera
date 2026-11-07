@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# hera
 
-## Getting Started
+your home insurance, except it actually works for you
 
-First, run the development server:
+okay so basically: insurance companies have a whole army of ai doing underwriting, fraud scoring, claim triage, all of it. you, the person literally paying them, get a 30 page pdf you've never read. hera fixes ts.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+you give hera your policy pdf once and it does the three things nobody wants to do:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **"i just got into a flood"**: walks you through the whole claim, step by step
+2. **"negotiate a lower rate"**: finds the discounts you're missing and writes the email to your insurer
+3. **"find me better insurance"**: checks your home's actual risk and compares quotes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+built in one day at **cortex by redshifted** (ottawa) for "ai for humanity"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+team: pj, ___, ___, ___
 
-## Learn More
+![negotiate flow: drafted email, you approve, simulated reply from the (fake) insurer](docs/negotiate.png)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## why this matters (not just vibes)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **1 in 3 canadian homeowners think their normal policy covers floods when it doesn't** ([ratesdotca / bnn bloomberg, 2022](https://insurancebusinessmag.com/ca/news/flood/one-in-three-canadians-think-their-home-insurance-policies-cover-water-damage-428755.aspx))
+- flood coverage is available to ~94% of canadian homes now, and take-up went from 26% in 2017 to 71% in 2023 ([ibc, 2026](https://www.insurancebusinessmag.com/ca/news/catastrophe/94-of-canadian-homes-can-now-access-overland-flood-insurance-ibc-finds-583572.aspx)). so more people HAVE it than ever, they just don't know their limits, deductibles or deadlines until the basement is already full
+- ottawa flooded in 2017 AND 2019. a claim hits you at literally your worst moment: 30 page policy, 90 day proof-of-loss deadline, and you have to list everything you owned from memory. very cooked
+- renewals go up every year and most people never ask for the discounts they already qualify for
 
-## Deploy on Vercel
+hera reads the fine print, does the paperwork, and asks before it does anything for you.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
