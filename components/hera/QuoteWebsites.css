@@ -1,0 +1,181 @@
+/* Four independent page layouts. Scoped to the simulated browser, never the Hera shell. */
+.qw-site { color: #292d30; font-family: Arial, Helvetica, sans-serif; font-size: 12px; background: white; }
+.qw-site * { box-sizing: border-box; }
+.qw-site h3, .qw-site h4, .qw-site p { margin: 0; }
+.qw-site h4 { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.qw-site p { font-size: 11px; line-height: 1.65; }
+.qw-fields { display: grid; gap: 12px; }
+.qw-field { min-width: 0; }
+.qw-label { display: block; font-size: 10px; line-height: 1.4; margin-bottom: 6px; }
+.qw-value { min-height: 35px; display: flex; justify-content: space-between; gap: 7px; padding: 9px 10px; font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; transition: box-shadow .2s; }
+.qw-check { flex-shrink: 0; color: #34764c; font-size: 10px; }
+.qw-caret { display: inline-block; width: 1px; height: 12px; background: currentColor; vertical-align: -2px; }
+.qw-loading .qw-value { background: #edf0f2 !important; border-color: transparent !important; }
+.qw-loading .qw-label { opacity: .4; }
+.qw-action { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 10px 18px; font-weight: 700; font-size: 11px; text-align: center; }
+.qw-price > span, .qw-price > strong, .qw-price > small { display: block; }
+.qw-price > span { font-size: 10px; line-height: 1.5; }
+.qw-price > strong { font-size: 27px; font-weight: 700; letter-spacing: -.8px; margin: 9px 0; overflow-wrap: anywhere; }
+.qw-price > small { font-size: 9px; line-height: 1.5; color: #707780; }
+.qw-footer { display: flex; justify-content: space-between; gap: 12px; padding: 13px 22px; font-size: 8px; color: #74797d; border-top: 1px solid #e9ebed; }
+/* NORTHLINE / Progressive */
+.qw-ex-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 19px 22px; }
+.qw-ex-header > b { font-size: 20px; font-style: italic; font-weight: 900; letter-spacing: -1px; color: #2475aa; text-transform: uppercase; }
+.qw-ex-header div { font-size: 8px; font-weight: 700; }
+.qw-ex-header > span { font-size: 9px; }
+.qw-ex-intro { text-align: center; padding: 20px 20px 31px; }
+.qw-ex-intro h3 { font-size: 35px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.1; }
+.qw-ex-intro p { font-size: 13px; color: #777; margin-top: 9px; }
+.qw-ex-product { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; background: white; box-shadow: 0 3px 23px #20374c24; padding: 18px 22px; margin: 0 36px -35px; }
+.qw-ex-product > div { flex: 1; }
+.qw-ex-product small { display: block; font-size: 8px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
+.qw-ex-product strong { display: block; font-size: 12px; font-weight: 400; padding-bottom: 7px; border-bottom: 1px solid #83939b; }
+.qw-ex-product strong span { float: right; color: #2678ad; }
+.qw-ex-product em { font-size: 9px; font-style: normal; color: #737d83; }
+.qw-ex-product i { font-style: normal; border: 1px solid #a6b5bd; border-radius: 50%; width: 22px; height: 22px; display: grid; place-items: center; }
+.qw-ex-product-tag { background: #2d78ad; color: white; padding: 13px 16px; font-weight: 700; font-size: 10px; border-radius: 2px; }
+.qw-ex-photo { height: 148px; margin: 0 20px; background: url('/demo/insurer-references/family.jpg') center / cover; }
+.qw-ex-application { display: grid; grid-template-columns: minmax(0, 1fr) 155px; gap: 24px; padding: 24px; background: #f2f8fb; }
+.qw-ex-section { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.qw-ex-section b { font-size: 17px; }
+.qw-ex-section span { font-size: 9px; color: #6a7e8a; }
+.qw-ex-form > p { margin: 7px 0 16px; color: #72808a; }
+.qw-explorer .qw-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.qw-explorer .qw-value { background: #fff; border: 1px solid #b5c3cc; border-radius: 2px; }
+.qw-explorer .qw-active .qw-value { border-color: #2475aa; box-shadow: 0 0 0 2px #2475aa26; }
+.qw-ex-summary { text-align: center; padding: 12px 0 0 16px; border-left: 1px solid #cfdde5; }
+.qw-ex-home { color: #2778ac; font-size: 38px; line-height: 1; display: block; margin-bottom: 12px; }
+.qw-ex-summary .qw-action { color: white; background: #2d78ad; border-radius: 3px; margin-top: 17px; width: 100%; }
+.qw-ex-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 16px 24px; background: #e6f1f7; font-size: 8px; color: #327ca6; }
+/* CEDARCREST / TD */
+.qw-bank { color: #304d3c; }
+.qw-bank-utility { display: flex; gap: 21px; padding: 7px 24px; background: #387b22; color: white; font-size: 8px; }
+.qw-bank-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 16px 24px; }
+.qw-bank-header > div { display: flex; align-items: center; gap: 11px; }
+.qw-bank-header strong { font-size: 19px; color: #242a25; letter-spacing: -.6px; }
+.qw-bank-mark { display: grid; place-items: center; background: #64a342; color: white; width: 33px; height: 32px; font-family: Georgia, serif; font-size: 29px; font-weight: 400; }
+.qw-bank-header > span { font-size: 9px; font-weight: 700; }
+.qw-bank-nav { display: flex; gap: 24px; align-items: center; padding: 9px 24px; border-top: 1px solid #ddd; font-size: 10px; font-weight: 700; }
+.qw-bank-nav b { margin-left: auto; padding: 10px 17px; color: #202920; background: #f49b31; }
+.qw-bank-banner { padding: 24px 28px; background: #eef4e7; border-top: 1px solid #e0e8da; border-bottom: 4px solid #78a64e; }
+.qw-bank-banner > span { font-size: 9px; }
+.qw-bank-banner h3 { font-size: 29px; font-weight: 600; line-height: 1.2; letter-spacing: -.8px; margin: 14px 0 8px; }
+.qw-bank-banner p { color: #61705d; }
+.qw-bank-workspace { display: grid; grid-template-columns: 165px minmax(0, 1fr); gap: 28px; padding: 26px 28px; }
+.qw-bank-steps { border-right: 1px solid #dfe5db; padding-right: 18px; font-size: 10px; }
+.qw-bank-steps > b { display: block; margin-bottom: 15px; font-size: 12px; }
+.qw-bank-steps > span { display: block; padding: 12px 8px; color: #819077; }
+.qw-bank-steps > .complete { color: #3e7d31; }
+.qw-bank-steps > .selected { background: #edf5e7; border-left: 3px solid #4b8d30; color: #326022; font-weight: 700; }
+.qw-bank-steps hr { border: none; border-top: 1px solid #dfe5db; margin: 20px 0; }
+.qw-bank-steps strong { font-size: 12px; }
+.qw-bank-steps p { margin-top: 6px; font-size: 10px; color: #7b8674; }
+.qw-bank-steps > .qw-bank-help { padding-left: 0; color: #3b732c; }
+.qw-bank-form > p { margin: 7px 0 19px; color: #788473; }
+.qw-bank .qw-fields { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+.qw-bank .qw-field { display: grid; grid-template-columns: 105px minmax(0, 1fr); align-items: center; gap: 12px; }
+.qw-bank .qw-label { margin: 0; }
+.qw-bank .qw-value { border: 1px solid #a9b4a4; }
+.qw-bank .qw-active .qw-value { border-color: #387b22; box-shadow: 0 0 0 2px #387b2222; }
+.qw-bank-next { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; font-size: 11px; font-weight: 700; }
+.qw-bank-next .qw-action { background: #f49b31; color: #263421; min-width: 130px; }
+.qw-bank-result { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin: 0 28px 22px; padding: 17px 20px; background: #f0f6e9; border: 1px solid #b8cfa7; font-size: 12px; }
+.qw-bank-result strong { font-size: 25px; font-weight: 500; }
+/* TAMARACK / State Farm */
+.qw-agent { color: #333; }
+.qw-agent-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; }
+.qw-agent-header > b { color: #c73727; font-size: 18px; font-style: italic; letter-spacing: -.7px; }
+.qw-agent-header b span { font-size: 14px; }
+.qw-agent-header div { font-size: 9px; }
+.qw-agent-header > strong { font-size: 9px; color: #c73727; }
+.qw-agent-crumb { background: #f5f5f5; border-block: 1px solid #e9e9e9; padding: 10px 24px; font-size: 9px; color: #666; }
+.qw-agent-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 29px 24px 17px; }
+.qw-agent-hero h3 { font-size: 30px; font-weight: 750; letter-spacing: -.8px; line-height: 1.12; }
+.qw-agent-hero p { margin-top: 14px; }
+.qw-agent-photo { background: url('/demo/insurer-references/patio.webp') center bottom / contain no-repeat; min-height: 205px; }
+.qw-agent-options { display: flex; gap: 8px; margin-top: 21px; font-size: 9px; font-weight: 700; }
+.qw-agent-options span { padding: 12px 10px; border: 1px solid #aaa; border-radius: 3px; }
+.qw-agent-options span:first-child { color: #b52f20; border-color: #b52f20; }
+.qw-agent-application { display: grid; grid-template-columns: minmax(0, 1fr) 175px; gap: 25px; padding: 22px 24px 27px; border-top: 1px solid #eee; }
+.qw-agent-application > div > p { margin: 7px 0 16px; color: #777; }
+.qw-agent .qw-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.qw-agent .qw-value { border: none; border-bottom: 1px solid #777; background: #f7f7f7; padding-left: 8px; }
+.qw-agent .qw-active .qw-value { border-bottom: 2px solid #cc3524; background: #fff2ef; }
+.qw-agent-next { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 23px; font-size: 9px; color: #ba3122; }
+.qw-agent .qw-action { background: #c73727; color: white; border-radius: 30px; min-width: 150px; }
+.qw-agent-card { border: 1px solid #e1d5d1; border-top: 4px solid #c73727; padding: 17px; background: #fdf9f8; }
+.qw-agent-card-label { font-size: 8px; color: #c73727; font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 14px; }
+.qw-agent-card .qw-price > strong { color: #bc3325; font-size: 25px; }
+.qw-agent-card hr { border: 0; border-top: 1px solid #e5d8d5; margin: 18px 0; }
+.qw-agent-card > strong { font-size: 13px; line-height: 1.5; }
+.qw-agent-card > p { color: #777; font-size: 10px; margin-top: 7px; }
+.qw-agent-link { display: block; color: #bd3324; font-size: 10px; font-weight: 700; margin-top: 16px; }
+/* FERNWOOD / Lemonade */
+.qw-direct { color: #444; }
+.qw-direct-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; padding: 20px 24px; gap: 12px; }
+.qw-direct-header div, .qw-direct-header > span { font-size: 9px; padding-top: 5px; }
+.qw-direct-header > span { text-align: right; }
+.qw-direct-header > b { font-family: 'Brush Script MT', 'Segoe Script', cursive; font-size: 29px; font-style: italic; font-weight: 600; letter-spacing: -1.2px; }
+.qw-direct-intro { text-align: center; padding: 18px 20px 24px; }
+.qw-direct-intro > span { font-size: 8px; letter-spacing: 2px; color: #888; }
+.qw-direct-intro h3 { font: 38px/1.1 Georgia, serif; letter-spacing: -1px; margin: 12px 0; }
+.qw-direct-intro p { font-size: 12px; color: #888; }
+.qw-direct-stage { position: relative; padding: 0 95px 34px; isolation: isolate; }
+.qw-direct-art { position: absolute; z-index: -1; inset: 35px 0 0; background: url('/demo/insurer-references/houses.webp') center bottom / 100% auto no-repeat; opacity: .6; }
+.qw-direct-form { background: #ffffffed; border: 1px solid #e9e9e9; box-shadow: 0 9px 30px #00000009; padding: 23px 27px; }
+.qw-direct-conversation { display: flex; align-items: center; justify-content: center; gap: 10px; padding-bottom: 18px; }
+.qw-direct-conversation > span { width: 29px; height: 29px; border-radius: 50%; background: #ffeaf3; color: #ed3184; display: grid; place-items: center; font-size: 21px; }
+.qw-direct-conversation p { font-size: 12px; font-weight: 600; }
+.qw-direct .qw-fields { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.qw-direct .qw-field { display: grid; grid-template-columns: 105px minmax(0, 1fr); align-items: center; gap: 12px; }
+.qw-direct .qw-label { margin: 0; color: #777; }
+.qw-direct .qw-value { border: 1px solid #ddd; border-radius: 3px; background: #fff; }
+.qw-direct .qw-active .qw-value { border-color: #ed3184; box-shadow: 0 0 0 2px #ed31841a; }
+.qw-direct .qw-action { background: #ed3184; color: white; width: 100%; margin-top: 19px; letter-spacing: .4px; border-radius: 3px; box-shadow: 0 5px 14px #ed31842c; }
+.qw-direct .qw-price { text-align: center; margin-top: 18px; border-top: 1px solid #eee; padding-top: 17px; }
+.qw-direct .qw-price strong { color: #ed3184; font-size: 35px; font-weight: 400; }
+.qw-direct-hint { color: #999; text-align: center; font-size: 9px !important; margin-top: 17px !important; }
+.qw-direct-bottom { display: flex; justify-content: center; gap: 24px; padding: 14px 20px 22px; font: italic 12px Georgia, serif; color: #888; }
+@container (max-width: 520px) {
+ .qw-ex-header > div, .qw-bank-header > span, .qw-agent-header > div, .qw-direct-header > div { display: none; }
+ .qw-ex-header > b { font-size: 18px; }
+ .qw-ex-intro h3 { font-size: 28px; }
+ .qw-ex-product { margin-inline: 16px; padding: 15px; gap: 10px; }
+ .qw-ex-product-tag { display: none; }
+ .qw-ex-application { grid-template-columns: minmax(0,1fr); padding: 20px; }
+ .qw-ex-summary { border-left: 0; border-top: 1px solid #cfdde5; padding: 16px 0 0; display: flex; align-items: center; gap: 16px; text-align: left; }
+ .qw-ex-summary .qw-action { width: auto; margin: 0; }
+ .qw-ex-home { display: none; }
+ .qw-ex-summary .qw-price { flex: 1; }
+ .qw-bank-workspace { grid-template-columns: minmax(0,1fr); gap: 18px; padding: 20px; }
+ .qw-bank-steps { display: flex; align-items: center; justify-content: space-between; border: 0; padding: 0; gap: 5px; }
+ .qw-bank-steps > b, .qw-bank-steps hr, .qw-bank-steps strong, .qw-bank-steps p, .qw-bank-steps > .qw-bank-help { display: none; }
+ .qw-bank-steps > span { padding: 8px 5px; font-size: 9px; }
+ .qw-bank-nav { gap: 12px; padding-inline: 16px; font-size: 8px; }
+ .qw-agent-hero { padding: 23px 18px; grid-template-columns: 1.2fr 1fr; }
+ .qw-agent-hero h3 { font-size: 25px; }
+ .qw-agent-options { flex-direction: column; align-items: flex-start; }
+ .qw-agent-photo { min-height: 180px; background-size: cover; background-position: 55% bottom; }
+ .qw-agent-application { grid-template-columns: minmax(0,1fr); padding: 20px; }
+ .qw-agent-card { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+ .qw-agent-card-label { grid-column: 1/-1; margin: 0; }
+ .qw-agent-card hr, .qw-agent-card > p, .qw-agent-link { display: none; }
+ .qw-direct-header { grid-template-columns: 1fr auto; }
+ .qw-direct-intro h3 { font-size: 32px; }
+ .qw-direct-stage { padding-inline: 22px; }
+ .qw-direct-form { padding: 20px; }
+ .qw-direct-bottom { gap: 12px; font-size: 10px; }
+}
+@container (max-width: 350px) {
+ .qw-site .qw-fields { grid-template-columns: minmax(0, 1fr); }
+ .qw-bank .qw-field, .qw-direct .qw-field { grid-template-columns: minmax(0,1fr); gap: 5px; }
+ .qw-bank-banner { padding: 22px 18px; }
+ .qw-bank-header { padding-inline: 16px; }
+ .qw-bank-header strong { font-size: 16px; }
+ .qw-agent-hero { grid-template-columns: minmax(0,1fr); }
+ .qw-agent-photo { height: 140px; min-height: 0; background-size: contain; }
+ .qw-agent-options { flex-direction: row; }
+ .qw-footer span:last-child { display: none; }
+ .qw-ex-summary { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { .qw-value { transition: none; } }
