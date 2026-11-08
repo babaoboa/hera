@@ -31,6 +31,8 @@ ottawa flooded in 2017 and then AGAIN in 2019. and the thing is, most people onl
 
 everything runs off one "household file" (your policy + your house) in a local sqlite db. hera asks for it once and then every feature uses it, so it never asks you the same thing twice.
 
+For Vercel, `npm run build` creates a seeded SQLite file and includes it in the server bundle. Each function copies that seed to `/tmp` on first use, because Vercel's deployed filesystem is read-only; the copy supports chat reads and writes for the lifetime of that function instance.
+
 ### "i just got into a flood"
 
 it opens a claim tracker that shows what's actually covered (for our demo policy that's overland water up to $50k with a $2,500 deductible) and the real deadline dates pulled from your policy. then you get a "before you clean up" checklist, because the adjuster needs to see the damage before you throw it out (most people have no idea).
@@ -150,6 +152,7 @@ then in another terminal, load the demo household (maya patel, fake insurer birc
 ```bash
 npm run seed            # home details + premium history, upload the policy yourself in the chat
 npm run seed -- --full  # also loads the policy, so all 3 features are ready right away
+npm run db:seed         # create the deployment seed database without starting the app
 ```
 
 refresh the page, type *"i just got into a flood"* and drop in `public/demo/birchwood-policy.pdf` when hera asks.

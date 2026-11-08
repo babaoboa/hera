@@ -1,4 +1,5 @@
-import { mkdirSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 
 /*
@@ -30,7 +31,11 @@ function loadSqlite(): SqliteModule {
   return mod as SqliteModule;
 }
 
-const DB_FILE = process.env.HERA_DB_PATH ?? path.join(process.cwd(), "data", "hera.db");
+const configuredDbFile = process.env.HERA_DB_PATH;
+const seedDbFile = path.join(process.cwd(), "data", "hera.seed.db");
+const DB_FILE = configuredDbFile ?? (
+  process.env.VERCEL === "1" ? path.join(tmpdir(), "hera.db") : path.join(process.cwd(), "data", "hera.db")
+);
 
 const MIGRATIONS = [
   `create table households (
@@ -92,6 +97,9 @@ const MIGRATIONS = [
 
 function open(): Database {
   mkdirSync(path.dirname(DB_FILE), { recursive: true });
+  if (!configuredDbFile && DB_FILE !== seedDbFile && !existsSync(DB_FILE) && existsSync(seedDbFile)) {
+    copyFileSync(seedDbFile, DB_FILE);
+  }
   const { DatabaseSync } = loadSqlite();
   const db = new DatabaseSync(DB_FILE);
   db.exec("pragma journal_mode = wal; pragma foreign_keys = on;");

@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run db:seed && next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "node scripts/seed.mjs"
+    "seed": "node scripts/seed.mjs",
+    "db:seed": "node scripts/seed-db.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.99",
